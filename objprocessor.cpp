@@ -82,7 +82,11 @@ QVector<Polygon> OBJprocessor::triangulate(const QVector<Polygon> &inpPolygonArr
 
 QVector<int> OBJprocessor::computeNormals(const OBJobject &obj2compute)
 {
+    QVector<int> normals2return;
+    int facesCount = obj2compute.faces.count();
+    for(int i=0; i<facesCount;i++){
 
+    }
 }
 
 

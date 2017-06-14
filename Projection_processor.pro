@@ -1,7 +1,7 @@
 QT += core
 QT -= gui
 
-DEFINES += "DATA_ROOT=\\\"C:/Projects/Gafarov/Projection_processor/\\\""
+DEFINES += "DATA_ROOT=\\\"C:/Projects/Gafarov/projection-processor/\\\""
 
 CONFIG += c++11
 

@@ -3,6 +3,8 @@
 #include <QTextStream>
 #include <QFile>
 #include <polygon.h>
+#include <QVector>
+#include <QVector3D>
 
 OBJprocessor::OBJprocessor()
 {
@@ -60,10 +62,9 @@ bool OBJprocessor::read(const QString &objfilename, OBJobject &obj2return)
 
 QVector<Polygon> OBJprocessor::triangulate(const QVector<Polygon> &inpPolygonArr)
 {
-    OBJobject obj2return = OBJobject();
-
     Q_ASSERT(!inpPolygonArr.isEmpty());
     QVector<Polygon> returnArray;
+
     for(int polygonIndex=0; polygonIndex<inpPolygonArr.length(); polygonIndex++){
         const int nVertices = inpPolygonArr[polygonIndex].vertArr.length()-1;
         for (int polygVrtIndex = 1; polygVrtIndex < nVertices; polygVrtIndex++){
@@ -80,13 +81,57 @@ QVector<Polygon> OBJprocessor::triangulate(const QVector<Polygon> &inpPolygonArr
     return returnArray;
 }
 
-QVector<int> OBJprocessor::computeNormals(const OBJobject &obj2compute)
+QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPolygonArr, const QVector<int> &inputVertArr)
 {
-    QVector<int> normals2return;
-    int facesCount = obj2compute.faces.count();
-    for(int i=0; i<facesCount;i++){
+    QVector<QVector3D> arr2return;
 
+    int polygonCount = inputPolygonArr.count();
+    for(int polygonIndex=0; polygonIndex<polygonCount;polygonIndex++){
+        numOfPolygonVerts = inputPolygonArr[polygonIndex].vertArr.count();
+        QVector<int> *currPolygVarr;
+        currPolygVarr = &(inputPolygonArr[polygonIndex].vertArr);
+        if (numOfPolygonVerts > 3){
+            return null;
+        }
+        float xOne, yOne, zOne = 0;
+        float xTwo, yTwo, zTwo = 0;
+        for (int polygVertIndex = 0; polygVertIndex < numOfPolygonVerts; polygVertIndex++){
+            int vNum1 = currPolygVarr[0];
+            int vNum2 = currPolygVarr[1];
+            int vNum3 = currPolygVarr[2];
+
+            float xvNum1 = inputVertArr[(int)(vNum1*3-3)];
+            float yvNum1 = inputVertArr[(int)(vNum1*3-2)];
+            float zvNum1 = inputVertArr[(int)(vNum1*3-1)];
+
+            float xvNum2 = inputVertArr[(int)(vNum2*3-3)];
+            float yvNum2 = inputVertArr[(int)(vNum2*3-2)];
+            float zvNum2 = inputVertArr[(int)(vNum2*3-1)];
+
+            float xvNum3 = inputVertArr[(int)(vNum3*3-3)];
+            float yvNum3 = inputVertArr[(int)(vNum3*3-2)];
+            float zvNum3 = inputVertArr[(int)(vNum3*3-1)];
+
+            xOne = xvNum1 - xvNum2;
+            yOne = yvNum1 - yvNum2;
+            zOne = zvNum1 - zvNum2;
+
+            xTwo = xvNum1 - xvNum3;
+            yTwo = yvNum1 - yvNum3;
+            zTwo = zvNum1 - zvNum3;
+
+            QVector3D productOfVectors;
+            QVector3D leftVector(xOne, yOne, zOne);
+            QVector3D rightVector(xTwo, yTwo, zTwo);
+
+            productOfVectors = QVector3D::crossProduct(leftVector,rightVector);
+            arr2return.append(productOfVectors);
+
+        }
     }
+
+    return arr2return;
 }
+
 
 

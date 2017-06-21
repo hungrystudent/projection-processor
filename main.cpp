@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <QDebug>
+#include <QVector>
+#include <QVector3D>
 
 using namespace std;
 
@@ -26,6 +28,6 @@ int main(int argc, char *argv[])
     }
 
     handHighPoly.faces = OBJprocessor::triangulate(handHighPoly.faces);
-
+    QVector<QVector3D> normals = OBJprocessor.computeNormals(handHighPoly.faces,handHighPoly.vertices);
     return a.exec();
 }

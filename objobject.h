@@ -9,7 +9,7 @@ public:
     OBJobject();
     QVector<int> vertices;
     QVector<Polygon> faces;
-    QVector<int> normalsArray;
+    QVector<QVector3D> normalsArray;
 };
 
 #endif // OBJOBJECT_H

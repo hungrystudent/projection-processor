@@ -1,5 +1,5 @@
-QT += core
-QT -= gui
+QT += core gui
+
 
 DEFINES += "DATA_ROOT=\\\"C:/Projects/Gafarov/projection-processor/\\\""
 

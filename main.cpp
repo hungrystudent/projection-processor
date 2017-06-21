@@ -28,6 +28,6 @@ int main(int argc, char *argv[])
     }
 
     handHighPoly.faces = OBJprocessor::triangulate(handHighPoly.faces);
-    QVector<QVector3D> normals = OBJprocessor.computeNormals(handHighPoly.faces,handHighPoly.vertices);
+    QVector<QVector3D> normals = OBJprocessor::computeNormals(handHighPoly.faces,handHighPoly.vertices);
     return a.exec();
 }

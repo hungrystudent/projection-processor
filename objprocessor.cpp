@@ -83,22 +83,31 @@ QVector<Polygon> OBJprocessor::triangulate(const QVector<Polygon> &inpPolygonArr
 
 QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPolygonArr, const QVector<int> &inputVertArr)
 {
-    QVector<QVector3D> arr2return;
+    int amountOfVerts = inputVertArr.count();
+    int amountOfPolygons = inputPolygonArr.count();
+
+    QVector<QVector3D> arr2return(amountOfVerts);
+    QVector<QVector3D> emptyArr;
+    QVector<int> timesVertAppear(amountOfVerts);
+
+    for(int polygIndex=0; polygIndex<amountOfPolygons;polygIndex++){
+        for(int vertIndex=0; vertIndex<inputPolygonArr[polygIndex].vertArr.count(); vertIndex++){
+
+        }
+    }
 
     int polygonCount = inputPolygonArr.count();
     for(int polygonIndex=0; polygonIndex<polygonCount;polygonIndex++){
-        numOfPolygonVerts = inputPolygonArr[polygonIndex].vertArr.count();
-        QVector<int> *currPolygVarr;
-        currPolygVarr = &(inputPolygonArr[polygonIndex].vertArr);
+        int numOfPolygonVerts = inputPolygonArr[polygonIndex].vertArr.count();
         if (numOfPolygonVerts > 3){
-            return null;
+            return emptyArr;
         }
         float xOne, yOne, zOne = 0;
         float xTwo, yTwo, zTwo = 0;
         for (int polygVertIndex = 0; polygVertIndex < numOfPolygonVerts; polygVertIndex++){
-            int vNum1 = currPolygVarr[0];
-            int vNum2 = currPolygVarr[1];
-            int vNum3 = currPolygVarr[2];
+            int vNum1 = inputPolygonArr[polygonIndex].vertArr[0];
+            int vNum2 = inputPolygonArr[polygonIndex].vertArr[1];
+            int vNum3 = inputPolygonArr[polygonIndex].vertArr[2];
 
             float xvNum1 = inputVertArr[(int)(vNum1*3-3)];
             float yvNum1 = inputVertArr[(int)(vNum1*3-2)];

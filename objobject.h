@@ -2,6 +2,7 @@
 #define OBJOBJECT_H
 #include <QVector>
 #include <polygon.h>
+#include <QVector3D>
 
 class OBJobject
 {

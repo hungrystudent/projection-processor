@@ -16,18 +16,18 @@ int main(int argc, char *argv[])
     OBJobject handHighPoly;
     OBJobject handLowPoly;
 
-    if(!OBJprocessor::read(QString(DATA_ROOT) + "Neutral.obj",handHighPoly)){
+//    if(!OBJprocessor::read(QString(DATA_ROOT) + "Neutral.obj",handHighPoly)){
+//        cout << "No such file or directory \n";
+//        qDebug() << QString(DATA_ROOT) + "Neutral.obj";
+//        return 0;
+//    }
+    if(!OBJprocessor::read(QString(DATA_ROOT) + "cube.obj",handLowPoly)){
         cout << "No such file or directory \n";
-        qDebug() << QString(DATA_ROOT) + "Neutral.obj";
-        return 0;
-    }
-    if(!OBJprocessor::read(QString(DATA_ROOT) + "WrapHand.obj",handLowPoly)){
-        cout << "No such file or directory \n";
-        qDebug() << QString(DATA_ROOT) + "WrapHand.obj" + "\n";
+        qDebug() << QString(DATA_ROOT) + "cube.obj" + "\n";
         return 0;
     }
 
-    handHighPoly.faces = OBJprocessor::triangulate(handHighPoly.faces);
-    QVector<QVector3D> normals = OBJprocessor::computeNormals(handHighPoly.faces,handHighPoly.vertices);
+    handLowPoly.faces = OBJprocessor::triangulate(handLowPoly.faces);
+    QVector<QVector3D> normals = OBJprocessor::computeNormals(handLowPoly.faces,handLowPoly.vertices);
     return a.exec();
 }

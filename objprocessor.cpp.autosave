@@ -87,14 +87,6 @@ QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPol
 
     QVector<QVector3D> arr2return(amountOfVerts);
     QVector<QVector3D> emptyArr;
-//    QVector<int> timesVertAppear(amountOfVerts);
-
-//    for(int polygIndex=0; polygIndex<amountOfPolygons; polygIndex++){
-//        for(int vertIndex=0; vertIndex<3; vertIndex++){
-//            int verticeNumber = inputPolygonArr[polygIndex].vertArr[vertIndex];
-//            timesVertAppear[verticeNumber-1]++;
-//        }
-//    }
 
     int polygonCount = inputPolygonArr.count();
     for(int polygonIndex=0; polygonIndex<polygonCount;polygonIndex++){

@@ -8,7 +8,7 @@ class OBJobject
 {
 public:
     OBJobject();
-    QVector<int> vertices;
+    QVector<QVector3D> vertices;
     QVector<Polygon> faces;
     QVector<QVector3D> normalsArray;
 };

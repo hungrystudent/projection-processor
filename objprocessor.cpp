@@ -37,9 +37,7 @@ OBJobject OBJprocessor::parse(QFile &file2parse)
             xcor = splitedStr.value(1).toFloat();
             ycor = splitedStr.value(2).toFloat();
             zcor = splitedStr.value(3).toFloat();
-            obj2return.vertices.append(xcor);
-            obj2return.vertices.append(ycor);
-            obj2return.vertices.append(zcor);
+            obj2return.vertices.append(QVector3D(xcor,ycor,zcor));
         }
         if (splitedStr.value(0) == surfaceMark){
             obj2return.faces.append(Polygon(splitedStr));
@@ -81,7 +79,8 @@ QVector<Polygon> OBJprocessor::triangulate(const QVector<Polygon> &inpPolygonArr
     return returnArray;
 }
 
-QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPolygonArr, const QVector<int> &inputVertArr)
+///Computes mean normals to every vertice, arranging it in the same order as a vertice array.
+QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPolygonArr, const QVector<QVector3D> &inputVertArr)
 {
     int amountOfVerts = inputVertArr.count();
     int amountOfPolygons = inputPolygonArr.count();
@@ -89,6 +88,13 @@ QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPol
     QVector<QVector3D> arr2return(amountOfVerts);
     QVector<QVector3D> emptyArr;
     QVector<int> timesVertAppear(amountOfVerts);
+
+    for(int polygIndex=0; polygIndex<amountOfPolygons; polygIndex++){
+        for(int vertIndex=0; vertIndex<3; vertIndex++){
+            int verticeNumber = inputPolygonArr[polygIndex].vertArr[vertIndex];
+            timesVertAppear[verticeNumber-1]++;
+        }
+    }
 
     for(int polygIndex=0; polygIndex<amountOfPolygons;polygIndex++){
         for(int vertIndex=0; vertIndex<inputPolygonArr[polygIndex].vertArr.count(); vertIndex++){
@@ -105,21 +111,22 @@ QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPol
         float xOne, yOne, zOne = 0;
         float xTwo, yTwo, zTwo = 0;
         for (int polygVertIndex = 0; polygVertIndex < numOfPolygonVerts; polygVertIndex++){
-            int vNum1 = inputPolygonArr[polygonIndex].vertArr[0];
-            int vNum2 = inputPolygonArr[polygonIndex].vertArr[1];
-            int vNum3 = inputPolygonArr[polygonIndex].vertArr[2];
+            int vertNum1 = inputPolygonArr[polygonIndex].vertArr[0];
+            int vertNum2 = inputPolygonArr[polygonIndex].vertArr[1];
+            int vertNum3 = inputPolygonArr[polygonIndex].vertArr[2];
 
-            float xvNum1 = inputVertArr[(int)(vNum1*3-3)];
-            float yvNum1 = inputVertArr[(int)(vNum1*3-2)];
-            float zvNum1 = inputVertArr[(int)(vNum1*3-1)];
+            float xvNum1 = inputVertArr[vertNum1].x();
+            float yvNum1 = inputVertArr[vertNum1].y();
+            float zvNum1 = inputVertArr[vertNum1].z();
 
-            float xvNum2 = inputVertArr[(int)(vNum2*3-3)];
-            float yvNum2 = inputVertArr[(int)(vNum2*3-2)];
-            float zvNum2 = inputVertArr[(int)(vNum2*3-1)];
+            float xvNum2 = inputVertArr[vertNum2].x();
+            float yvNum2 = inputVertArr[vertNum2].y();
+            float zvNum2 = inputVertArr[vertNum2].z();
 
-            float xvNum3 = inputVertArr[(int)(vNum3*3-3)];
-            float yvNum3 = inputVertArr[(int)(vNum3*3-2)];
-            float zvNum3 = inputVertArr[(int)(vNum3*3-1)];
+
+            float xvNum3 = inputVertArr[vertNum3].x();
+            float yvNum3 = inputVertArr[vertNum3].y();
+            float zvNum3 = inputVertArr[vertNum3].z();
 
             xOne = xvNum1 - xvNum2;
             yOne = yvNum1 - yvNum2;

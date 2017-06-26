@@ -12,7 +12,7 @@ public:
     OBJprocessor();
     static bool read(const QString &objfilename, OBJobject &obj2return);
     static QVector<Polygon> triangulate(const QVector<Polygon> &inpPolygonArr);
-    static QVector<QVector3D> computeNormals(const QVector<Polygon> &inputPolygonArr, const QVector<int> &inputVertArr);
+    static QVector<QVector3D> computeNormals(const QVector<Polygon> &inputPolygonArr, const QVector<QVector3D> &inputVertArr);
 };
 
 #endif // OBJREADER_H

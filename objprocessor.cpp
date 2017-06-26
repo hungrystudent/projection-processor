@@ -87,56 +87,35 @@ QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPol
 
     QVector<QVector3D> arr2return(amountOfVerts);
     QVector<QVector3D> emptyArr;
-//    QVector<int> timesVertAppear(amountOfVerts);
-
-//    for(int polygIndex=0; polygIndex<amountOfPolygons; polygIndex++){
-//        for(int vertIndex=0; vertIndex<3; vertIndex++){
-//            int verticeNumber = inputPolygonArr[polygIndex].vertArr[vertIndex];
-//            timesVertAppear[verticeNumber-1]++;
-//        }
-//    }
 
     int polygonCount = inputPolygonArr.count();
     for(int polygonIndex=0; polygonIndex<polygonCount;polygonIndex++){
         int numOfPolygonVerts = inputPolygonArr[polygonIndex].vertArr.count();
-        if (numOfPolygonVerts > 3){
-            return emptyArr;
-        }
-
         for (int polygVertIndex = 0; polygVertIndex < numOfPolygonVerts; polygVertIndex++){
-            int vertNum1_isCurrent;
-            int vertNum2;
-            int vertNum3;
-            switch (polygVertIndex) {
-            case 0:
-                vertNum1_isCurrent = inputPolygonArr[polygonIndex].vertArr[polygVertIndex];
-                vertNum2 = inputPolygonArr[polygonIndex].vertArr[polygVertIndex+1];
-                vertNum3 = inputPolygonArr[polygonIndex].vertArr[polygVertIndex+2];
-                break;
-            case 1:
-                vertNum1_isCurrent = inputPolygonArr[polygonIndex].vertArr[polygVertIndex];
-                vertNum2 = inputPolygonArr[polygonIndex].vertArr[polygVertIndex-1];
-                vertNum3 = inputPolygonArr[polygonIndex].vertArr[polygVertIndex+1];
-                break;
-            case 2:
-                vertNum1_isCurrent = inputPolygonArr[polygonIndex].vertArr[polygVertIndex];
-                vertNum2 = inputPolygonArr[polygonIndex].vertArr[polygVertIndex-1];
-                vertNum3 = inputPolygonArr[polygonIndex].vertArr[polygVertIndex-2];
-                break;
-            }
+            int vertNumCurrent;
+            int vertNumNext;
+            int vertNumPrev;
 
-            float xvNum1 = inputVertArr[vertNum1_isCurrent-1].x();
-            float yvNum1 = inputVertArr[vertNum1_isCurrent-1].y();
-            float zvNum1 = inputVertArr[vertNum1_isCurrent-1].z();
+            vertNumCurrent = inputPolygonArr[polygonIndex].vertArr[polygVertIndex];
+            int cyclePrev;
+            int cycleNext;
+            cycleNext = (polygVertIndex+numOfPolygonVerts+2) % (numOfPolygonVerts);
+            cyclePrev = (polygVertIndex+numOfPolygonVerts-1) % (numOfPolygonVerts);
+            vertNumNext = inputPolygonArr[polygonIndex].vertArr[cycleNext];
+            vertNumPrev = inputPolygonArr[polygonIndex].vertArr[cyclePrev];
 
-            float xvNum2 = inputVertArr[vertNum2-1].x();
-            float yvNum2 = inputVertArr[vertNum2-1].y();
-            float zvNum2 = inputVertArr[vertNum2-1].z();
+            float xvNum1 = inputVertArr[vertNumCurrent-1].x();
+            float yvNum1 = inputVertArr[vertNumCurrent-1].y();
+            float zvNum1 = inputVertArr[vertNumCurrent-1].z();
+
+            float xvNum2 = inputVertArr[vertNumNext-1].x();
+            float yvNum2 = inputVertArr[vertNumNext-1].y();
+            float zvNum2 = inputVertArr[vertNumNext-1].z();
 
 
-            float xvNum3 = inputVertArr[vertNum3-1].x();
-            float yvNum3 = inputVertArr[vertNum3-1].y();
-            float zvNum3 = inputVertArr[vertNum3-1].z();
+            float xvNum3 = inputVertArr[vertNumPrev-1].x();
+            float yvNum3 = inputVertArr[vertNumPrev-1].y();
+            float zvNum3 = inputVertArr[vertNumPrev-1].z();
 
             float xOne, yOne, zOne = 0;
             float xTwo, yTwo, zTwo = 0;
@@ -154,7 +133,7 @@ QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPol
             QVector3D rightVector(xTwo, yTwo, zTwo);
 
             productOfVectors = QVector3D::crossProduct(leftVector,rightVector);
-            arr2return[vertNum1_isCurrent-1] += productOfVectors;
+            arr2return[vertNumCurrent-1] += productOfVectors;
         }
     }
 

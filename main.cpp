@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    handLowPoly.faces = OBJprocessor::triangulate(handLowPoly.faces);
+    //handLowPoly.faces = OBJprocessor::triangulate(handLowPoly.faces);
     QVector<QVector3D> normals = OBJprocessor::computeNormals(handLowPoly.faces,handLowPoly.vertices);
     return a.exec();
 }

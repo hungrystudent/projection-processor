@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     objobject.cpp \
     objprocessor.cpp \
     polygon.cpp \
-    kdtreenode.cpp
+    kdtreenode.cpp \
+    kdtree.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -32,4 +33,5 @@ HEADERS += \
     objobject.h \
     objprocessor.h \
     polygon.h \
-    kdtreenode.h
+    kdtreenode.h \
+    kdtree.h

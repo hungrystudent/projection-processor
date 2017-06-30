@@ -5,7 +5,17 @@ KDTreeNode::KDTreeNode()
 
 }
 
-KDTreeNode KDTreeNode::createTree(const QVector<int> &pointList, const int depth)
+KDTreeNode::KDTreeNode(bool flag)
 {
-
+    emptyFlag = flag;
 }
+
+KDTreeNode::KDTreeNode(KDTreeNode *inpLeftNode, KDTreeNode *inpRightNode, int inpPointNum, const QVector3D &inpCoords)
+{
+    emptyFlag = false;
+    leftNode = inpLeftNode;
+    rightNode = inpRightNode;
+    medianNumber = inpPointNum;
+    coordinates = inpCoords;
+}
+

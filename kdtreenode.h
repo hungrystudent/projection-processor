@@ -1,17 +1,19 @@
 #ifndef KDTREENODE_H
 #define KDTREENODE_H
 #include <QVector>
+#include <QVector3D>
 
 class KDTreeNode
 {
 public:
     KDTreeNode();
-    const int TDEPTH = 10;
-    QVector<int> trace;
-    int vertexNumber;
+    KDTreeNode(bool flag);
+    KDTreeNode(KDTreeNode *inpLeftNode,KDTreeNode *inpRightNode,int inpPointNum, const QVector3D &inpCoords);
+    bool emptyFlag;
+    int medianNumber;
+    QVector3D coordinates;
     KDTreeNode *leftNode;
     KDTreeNode *rightNode;
-    KDTreeNode createTree(const QVector<int> &pointList, const int depth);
 };
 
 #endif // KDTREENODE_H

@@ -10,7 +10,7 @@ public:
     KDTreeNode(bool flag);
     KDTreeNode(KDTreeNode *inpLeftNode,KDTreeNode *inpRightNode,int inpPointNum, const QVector3D &inpCoords);
     bool emptyFlag;
-    int medianNumber;
+    int verticeGlobalNumber;
     QVector3D coordinates;
     KDTreeNode *leftNode;
     KDTreeNode *rightNode;

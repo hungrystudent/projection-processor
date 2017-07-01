@@ -15,7 +15,7 @@ KDTreeNode::KDTreeNode(KDTreeNode *inpLeftNode, KDTreeNode *inpRightNode, int in
     emptyFlag = false;
     leftNode = inpLeftNode;
     rightNode = inpRightNode;
-    medianNumber = inpPointNum;
+    verticeGlobalNumber = inpPointNum;
     coordinates = inpCoords;
 }
 

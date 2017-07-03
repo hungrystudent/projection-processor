@@ -128,38 +128,48 @@ KDTreeNode *KDTree::findClosest(KDTreeNode *subTreeForSearch, const QVector3D &i
         newBestDistance = cur_distance;
     }
 
-    switch (axis) {
-    case 0:
-        if ((newBestDistance > qFabs(currentBest->coordinates.x() - inputDot.x())) || (subTreeForSearch->leftNode->emptyFlag != true)){
-            maybeBetter = KDTree::findClosest(subTreeForSearch->leftNode,inputDot,depth+1);
+    if (subTreeForSearch->leftNode->emptyFlag != true){
+        switch (axis) {
+        case 0:
+            if ((newBestDistance > qFabs(currentBest->coordinates.x() - inputDot.x())) ){
+                maybeBetter = KDTree::findClosest(subTreeForSearch->leftNode,inputDot,depth+1);
+            }else{
+                maybeBetter = subTreeForSearch;
+            }
+            break;
+        case 1:
+            if ((newBestDistance > qFabs(currentBest->coordinates.y() - inputDot.y()))){
+                maybeBetter = KDTree::findClosest(subTreeForSearch->leftNode,inputDot,depth+1);
+            }else{
+                maybeBetter = subTreeForSearch;
+            }
+            break;
+        case 2:
+            if ((newBestDistance > qFabs(currentBest->coordinates.z() - inputDot.z()))){
+                maybeBetter = KDTree::findClosest(subTreeForSearch->leftNode,inputDot,depth+1);
+            }else{
+                maybeBetter = subTreeForSearch;
+            }
+            break;
+        default:
+            break;
         }
-        break;
-    case 1:
-        if ((newBestDistance > qFabs(currentBest->coordinates.y() - inputDot.y())) || (subTreeForSearch->leftNode->emptyFlag != true)){
-            maybeBetter = KDTree::findClosest(subTreeForSearch->leftNode,inputDot,depth+1);
+
+        if(maybeBetter != subTreeForSearch){
+            float probx_cur_difference = subTreeForSearch->coordinates.x() - inputDot.x();
+            float proby_cur_difference = subTreeForSearch->coordinates.y() - inputDot.y();
+            float probz_cur_difference = subTreeForSearch->coordinates.z() - inputDot.z();
+            float probcur_distance= qSqrt(probx_cur_difference*probx_cur_difference+proby_cur_difference*proby_cur_difference+probz_cur_difference*probz_cur_difference);
+
+            float probx_best_difference = maybeBetter->coordinates.x() - inputDot.x();
+            float proby_best_difference = maybeBetter->coordinates.y() - inputDot.y();
+            float probz_best_difference = maybeBetter->coordinates.z() - inputDot.z();
+            float probbest_distance= qSqrt(probx_best_difference*probx_best_difference+proby_best_difference*proby_best_difference+probz_best_difference*probz_best_difference);
+
+            if ((probcur_distance < probbest_distance)){
+                currentBest=subTreeForSearch;
+            }
         }
-        break;
-    case 2:
-        if ((newBestDistance > qFabs(currentBest->coordinates.z() - inputDot.z())) || (subTreeForSearch->leftNode->emptyFlag != true)){
-            maybeBetter = KDTree::findClosest(subTreeForSearch->leftNode,inputDot,depth+1);
-        }
-        break;
-    default:
-        break;
-    }
-
-    float probx_cur_difference = subTreeForSearch->coordinates.x() - inputDot.x();
-    float proby_cur_difference = subTreeForSearch->coordinates.y() - inputDot.y();
-    float probz_cur_difference = subTreeForSearch->coordinates.z() - inputDot.z();
-    float probcur_distance= qSqrt(probx_cur_difference*probx_cur_difference+proby_cur_difference*proby_cur_difference+probz_cur_difference*probz_cur_difference);
-
-    float probx_best_difference = maybeBetter->coordinates.x() - inputDot.x();
-    float proby_best_difference = maybeBetter->coordinates.y() - inputDot.y();
-    float probz_best_difference = maybeBetter->coordinates.z() - inputDot.z();
-    float probbest_distance= qSqrt(probx_best_difference*probx_best_difference+proby_best_difference*proby_best_difference+probz_best_difference*probz_best_difference);
-
-    if ((probcur_distance < probbest_distance)){
-        currentBest=subTreeForSearch;
     }
 
     return currentBest;

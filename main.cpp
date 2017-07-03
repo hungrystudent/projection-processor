@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     }
     KDTreeNode *cubeTree;
     cubeTree = KDTree::createTree(testCube.vertices,indexArray,0);
-    QVector3D testDot(1.001,-0.001,1.001);
-    KDTreeNode *closest = KDTree::findClosest(cubeTree,cubeTree,testDot,0);
+    QVector3D testDot(0.001,-12.001,0.001);
+    KDTreeNode *closest = KDTree::findClosest(cubeTree,testDot,0);
     return a.exec();
 }

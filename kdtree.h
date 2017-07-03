@@ -10,7 +10,7 @@ private:
 public:
     KDTree();
     static KDTreeNode *createTree(const QVector<QVector3D> &pointList,const QVector<int> &indexArray, int depth);
-    static KDTreeNode *findClosest(KDTreeNode *treeForSearch,KDTreeNode *inpCurrentBest, const QVector3D &inputDot,int depth);
+    static KDTreeNode *findClosest(KDTreeNode *treeForSearch, const QVector3D &inputDot,int depth);
 };
 
 #endif // KDTREE_H

@@ -1,25 +1,11 @@
 #include "kdtree.h"
 #include <kdtreenode.h>
-
+#include <qmath.h>
 KDTree::KDTree()
 {
 
 }
 
-//bool KDTree::xAxisLessThan(const QVector3D &vec1, const QVector3D &vec2)
-//{
-//    return vec1.x()<vec2.x();
-//}
-
-//bool KDTree::yAxisLessThan(const QVector3D &vec1, const QVector3D &vec2)
-//{
-//    return vec1.y()<vec2.y();
-//}
-
-//bool KDTree::zAxisLessThan(const QVector3D &vec1, const QVector3D &vec2)
-//{
-//    return vec1.z()<vec2.z();
-//}
 
 
 
@@ -86,53 +72,57 @@ KDTreeNode *KDTree::createTree(const QVector<QVector3D> &pointList,const QVector
     rightChild=KDTree::createTree(pointList,afterMedianIndexes,1+depth);
     node2return = new KDTreeNode(leftChild,rightChild,medianGlobalIndex,pointList[medianGlobalIndex]);
     return node2return;
+}
 
-//    auto func = [&](const int ind1, const int ind2){
-//        return pointList[ind1].x() < pointList[ind2].x();
-//    };
-//    QVector<int> indices;
-//    qSort(indices.begin(),indices.end(),func);
+KDTreeNode *KDTree::findClosest(KDTreeNode *subTreeForSearch, KDTreeNode *inpCurrentBest, const QVector3D &inputDot, int depth)
+{
+    int dimCount = 3;
+    int axis = depth % dimCount;
+    KDTreeNode *currentBest = inpCurrentBest;
 
-//    KDTreeNode *emptyNode;
-//    if((depth > TDEPTH)||(pointList.count() < 1)){
-//        emptyNode = new KDTreeNode(true);
-//        return emptyNode;
-//    }
+    float x_cur_difference = subTreeForSearch->coordinates.x() - inputDot.x();
+    float y_cur_difference = subTreeForSearch->coordinates.y() - inputDot.y();
+    float z_cur_difference = subTreeForSearch->coordinates.z() - inputDot.z();
+    float cur_distance= qSqrt(x_cur_difference*x_cur_difference+y_cur_difference*y_cur_difference+z_cur_difference*z_cur_difference);
 
-//    QVector<QVector3D> localPointList = pointList;
-//    int dimCount = 3;
-//    KDTreeNode *node2return;
-//    KDTreeNode *leftChild;
-//    KDTreeNode *rightChild;
-//    QVector<QVector3D> beforeMedianArr;
-//    QVector<QVector3D> afterMedianArr;
+    float x_best_difference = currentBest->coordinates.x() - inputDot.x();
+    float y_best_difference = currentBest->coordinates.y() - inputDot.y();
+    float z_best_difference = currentBest->coordinates.z() - inputDot.z();
+    float best_distance= qSqrt(x_best_difference*x_best_difference+y_best_difference*y_best_difference+z_best_difference*z_best_difference);
 
-//    int axis = depth % dimCount;
-//    switch (axis) {
-//    case 0:
-//        qSort(localPointList.begin(),localPointList.end(),xAxisLessThan);
-//        break;
-//    case 1:
-//        qSort(localPointList.begin(),localPointList.end(),yAxisLessThan);
-//        break;
-//    case 2:
-//        qSort(localPointList.begin(),localPointList.end(),zAxisLessThan);
-//        break;
-//    default:
-//        break;
-//    }
+    //if ((cur_distance > best_distance)||(subTreeForSearch->emptyFlag==true)){
+    if ((subTreeForSearch->emptyFlag==true)){
+        return currentBest;
+    }
+    else{
+        currentBest=subTreeForSearch;
+    }
 
-//    int median = (localPointList.count()-1) / 2;
+    switch (axis) {
+    case 0:
+        if (inputDot.x() >= subTreeForSearch->coordinates.x()){
+            currentBest = KDTree::findClosest(currentBest->rightNode,currentBest,inputDot,depth+1);
+        }else{
+            currentBest = KDTree::findClosest(currentBest->leftNode,currentBest,inputDot,depth+1);
+        }
+        break;
+    case 1:
+        if (inputDot.y() >= subTreeForSearch->coordinates.y()){
+            currentBest = KDTree::findClosest(currentBest->rightNode,currentBest,inputDot,depth+1);
+        }else{
+            currentBest = KDTree::findClosest(currentBest->leftNode,currentBest,inputDot,depth+1);
+        }
+        break;
+    case 2:
+        if (inputDot.z() >= subTreeForSearch->coordinates.z()){
+            currentBest = KDTree::findClosest(currentBest->rightNode,currentBest,inputDot,depth+1);
+        }else{
+            currentBest = KDTree::findClosest(currentBest->leftNode,currentBest,inputDot,depth+1);
+        }
+        break;
+    default:
+        break;
+    }
 
-//    for (int i=0; i<(median); i++){
-//        beforeMedianArr.append(localPointList[i]);
-//    }
-//    for (int i=median+1; i<localPointList.count(); i++){
-//        afterMedianArr.append(localPointList[i]);
-//    }
-
-//    leftChild=KDTree::createTree(beforeMedianArr,++depth);
-//    rightChild=KDTree::createTree(afterMedianArr,++depth);
-//    node2return = new KDTreeNode(leftChild,rightChild,median,localPointList[median]);
-//    return node2return;
+    return currentBest;
 }

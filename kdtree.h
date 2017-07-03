@@ -10,9 +10,7 @@ private:
 public:
     KDTree();
     static KDTreeNode *createTree(const QVector<QVector3D> &pointList,const QVector<int> &indexArray, int depth);
-//    static bool xAxisLessThan(const QVector3D &vec1, const QVector3D &vec2);
-//    static bool yAxisLessThan(const QVector3D &vec1, const QVector3D &vec2);
-//    static bool zAxisLessThan(const QVector3D &vec1, const QVector3D &vec2);
+    static KDTreeNode *findClosest(KDTreeNode *treeForSearch,KDTreeNode *inpCurrentBest, const QVector3D &inputDot,int depth);
 };
 
 #endif // KDTREE_H

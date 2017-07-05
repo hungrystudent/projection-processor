@@ -27,7 +27,7 @@ KDTreeNode *KDTree::createTree(const QVector<QVector3D> &pointList,const QVector
     }
 
     KDTreeNode *emptyNode;
-    if((depth > TDEPTH)||(indexArray.count() <1)){
+    if((indexArray.count() <1)){
         emptyNode = new KDTreeNode(true);
         return emptyNode;
     }
@@ -166,8 +166,8 @@ KDTreeNode *KDTree::findClosest(KDTreeNode *subTreeForSearch, const QVector3D &i
             float probz_best_difference = maybeBetter->coordinates.z() - inputDot.z();
             float probbest_distance= qSqrt(probx_best_difference*probx_best_difference+proby_best_difference*proby_best_difference+probz_best_difference*probz_best_difference);
 
-            if ((probcur_distance < probbest_distance)){
-                currentBest=subTreeForSearch;
+            if ((probcur_distance > probbest_distance)){
+                currentBest=maybeBetter;
             }
         }
     }

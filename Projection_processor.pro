@@ -1,5 +1,5 @@
 QT += core gui
-
+QT += core testlib
 
 DEFINES += "DATA_ROOT=\\\"C:/Projects/Gafarov/projection-processor/\\\""
 
@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     objprocessor.cpp \
     polygon.cpp \
     kdtreenode.cpp \
-    kdtree.cpp
+    kdtree.cpp \
+    kdtreetests.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -34,4 +35,5 @@ HEADERS += \
     objprocessor.h \
     polygon.h \
     kdtreenode.h \
-    kdtree.h
+    kdtree.h \
+    kdtreetests.h

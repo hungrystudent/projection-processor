@@ -10,10 +10,20 @@
 #include <kdtree.h>
 #include <QTime>
 
+#include <QTest>
+#include "kdtreetests.h"
+
 using namespace std;
+
+void runTests()
+{
+    KDtreeTests tests;
+    QTest::qExec(&tests);
+}
 
 int main(int argc, char *argv[])
 {
+    runTests();
     QCoreApplication a(argc, argv);
     QTime myTimer;
     OBJobject handHighPoly;
@@ -24,9 +34,9 @@ int main(int argc, char *argv[])
     //        qDebug() << QString(DATA_ROOT) + "Neutral.obj";
     //        return 0;
     //    }
-    if(!OBJprocessor::read(QString(DATA_ROOT) + "Neutral.obj",testCube)){
+    if(!OBJprocessor::read(QString(DATA_ROOT) + "cube.obj",testCube)){
         cout << "No such file or directory \n";
-        qDebug() << QString(DATA_ROOT) + "go.obj" + "\n";
+        qDebug() << QString(DATA_ROOT) + "cube.obj" + "\n";
         return 0;
     }
 
@@ -45,7 +55,7 @@ int main(int argc, char *argv[])
     qDebug() << "Tree created \n";
 
         myTimer.start();
-    QVector3D testDot(-100.001,0.001,0.001);
+    QVector3D testDot(2.00,2.00,2.00);
     KDTreeNode *closest = KDTree::findClosest(cubeTree,testDot,0);
     int nMilliseconds = myTimer.elapsed();
 

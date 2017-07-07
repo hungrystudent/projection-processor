@@ -1,5 +1,7 @@
-QT += core gui
+QT += core gui opengl
 QT += core testlib
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 DEFINES += "DATA_ROOT=\\\"C:/Projects/Gafarov/projection-processor/\\\""
 
@@ -17,13 +19,23 @@ SOURCES += main.cpp \
     polygon.cpp \
     kdtreenode.cpp \
     kdtree.cpp \
-    kdtreetests.cpp
+    kdtreetests.cpp \
+    mainwindow.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+
+
+include(../Andrew/WViewport3D/WContext/WContextNavigation.pri)
+include(../Andrew/Wrap3Framework/WGLGeomDataRendererTests/WGLMaterialSurface/WGLMaterialSurface.pri)
+include(../Andrew/Wrap3Framework/WGLGeomDataRendererTests/WGLMaterialWireframe/WGLMaterialWireframe.pri)
+include(../Andrew/Wrap3Framework/WGLGeomDataRendererTests/WGLDataGeomStackTriangulated/WGLDataGeomStackTriangulated.pri)
+include(../Andrew/Wrap3Framework/WGLObjectRendererTests01/WGLObjectRenderer/WGLObjectRenderer.pri)
+include(../Andrew/Wrap3Framework/WGLGridTests/WGLGrid/WGLGrid.pri)
+include(../Andrew/Wrap3Framework/Shaders/WGLShaderConst/WGLShaderConst.pri)
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -36,4 +48,7 @@ HEADERS += \
     polygon.h \
     kdtreenode.h \
     kdtree.h \
-    kdtreetests.h
+    kdtreetests.h \
+    mainwindow.h
+
+FORMS    += mainwindow.ui

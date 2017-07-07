@@ -9,7 +9,8 @@
 #include <kdtreenode.h>
 #include <kdtree.h>
 #include <QTime>
-
+#include "mainwindow.h"
+#include <QApplication>
 #include <QTest>
 #include "kdtreetests.h"
 
@@ -24,45 +25,49 @@ void runTests()
 int main(int argc, char *argv[])
 {
     runTests();
-    QCoreApplication a(argc, argv);
-    QTime myTimer;
-    OBJobject handHighPoly;
-    OBJobject testCube;
+    QApplication a(argc, argv);
 
-    //    if(!OBJprocessor::read(QString(DATA_ROOT) + "Neutral.obj",handHighPoly)){
-    //        cout << "No such file or directory \n";
-    //        qDebug() << QString(DATA_ROOT) + "Neutral.obj";
-    //        return 0;
-    //    }
-    if(!OBJprocessor::read(QString(DATA_ROOT) + "cube.obj",testCube)){
-        cout << "No such file or directory \n";
-        qDebug() << QString(DATA_ROOT) + "cube.obj" + "\n";
-        return 0;
-    }
+    MainWindow w;
+    w.show();
 
-    //handLowPoly.faces = OBJprocessor::triangulate(handLowPoly.faces);
-    QVector<QVector3D> normals = OBJprocessor::computeNormals(testCube.faces,testCube.vertices);
-    testCube.normalsArray = normals;
-    int vertCount = testCube.vertices.count();
-    QVector<int> indexArray(vertCount);
-    for (int vIndex=0; vIndex < vertCount; vIndex++){
-        indexArray[vIndex]=vIndex;
-    }
+//    QTime myTimer;
+//    OBJobject handHighPoly;
+//    OBJobject testCube;
 
-    KDTreeNode *cubeTree;
+//    //    if(!OBJprocessor::read(QString(DATA_ROOT) + "Neutral.obj",handHighPoly)){
+//    //        cout << "No such file or directory \n";
+//    //        qDebug() << QString(DATA_ROOT) + "Neutral.obj";
+//    //        return 0;
+//    //    }
+//    if(!OBJprocessor::read(QString(DATA_ROOT) + "cube.obj",testCube)){
+//        cout << "No such file or directory \n";
+//        qDebug() << QString(DATA_ROOT) + "cube.obj" + "\n";
+//        return 0;
+//    }
 
-    cubeTree = KDTree::createTree(testCube.vertices,indexArray,0);
-    qDebug() << "Tree created \n";
+//    //handLowPoly.faces = OBJprocessor::triangulate(handLowPoly.faces);
+//    QVector<QVector3D> normals = OBJprocessor::computeNormals(testCube.faces,testCube.vertices);
+//    testCube.normalsArray = normals;
+//    int vertCount = testCube.vertices.count();
+//    QVector<int> indexArray(vertCount);
+//    for (int vIndex=0; vIndex < vertCount; vIndex++){
+//        indexArray[vIndex]=vIndex;
+//    }
 
-        myTimer.start();
-    QVector3D testDot(2.00,2.00,2.00);
-    KDTreeNode *closest = KDTree::findClosest(cubeTree,testDot,0);
-    int nMilliseconds = myTimer.elapsed();
+//    KDTreeNode *cubeTree;
 
-    qDebug() << "closest found \n";
-    qDebug() << "x coord: " << closest->coordinates.x();
-    qDebug() << "y coord: " << closest->coordinates.y();
-    qDebug() << "z coord: " << closest->coordinates.z();
-    qDebug() << "elapsed time: " << nMilliseconds;
+//    cubeTree = KDTree::createTree(testCube.vertices,indexArray,0);
+//    qDebug() << "Tree created \n";
+
+//        myTimer.start();
+//    QVector3D testDot(2.00,2.00,2.00);
+//    KDTreeNode *closest = KDTree::findClosest(cubeTree,testDot,0);
+//    int nMilliseconds = myTimer.elapsed();
+
+//    qDebug() << "closest found \n";
+//    qDebug() << "x coord: " << closest->coordinates.x();
+//    qDebug() << "y coord: " << closest->coordinates.y();
+//    qDebug() << "z coord: " << closest->coordinates.z();
+//    qDebug() << "elapsed time: " << nMilliseconds;
     return a.exec();
 }

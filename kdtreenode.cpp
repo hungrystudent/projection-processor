@@ -5,6 +5,12 @@ KDTreeNode::KDTreeNode()
 
 }
 
+KDTreeNode::~KDTreeNode()
+{
+    delete leftNode;
+    delete rightNode;
+}
+
 KDTreeNode::KDTreeNode(bool flag)
 {
     emptyFlag = flag;

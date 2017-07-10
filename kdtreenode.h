@@ -7,6 +7,7 @@ class KDTreeNode
 {
 public:
     KDTreeNode();
+    ~KDTreeNode();
     KDTreeNode(bool flag);
     KDTreeNode(KDTreeNode *inpLeftNode,KDTreeNode *inpRightNode,int inpPointNum, const QVector3D &inpCoords);
     bool emptyFlag;

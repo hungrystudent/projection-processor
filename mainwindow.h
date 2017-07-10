@@ -33,9 +33,9 @@ private:
     GeometryStack2::GeomStackTriangulated *geom = nullptr;
     Wrap::WGLDataGeomStackTriangulated *glData = nullptr;
     Wrap::WGLObjectRenderer *glRenderer = nullptr;
-    QSpinBox *spinboxX;
-    QSpinBox *spinboxY;
-    QSpinBox *spinboxZ;
+    QDoubleSpinBox *spinboxX;
+    QDoubleSpinBox *spinboxY;
+    QDoubleSpinBox *spinboxZ;
     KDTreeNode *geomTree;
     Wrap::WGLDots *glDots = nullptr;
 protected:
@@ -43,12 +43,12 @@ protected:
     void deinitializeViewport();
     void clearGeometry();
     bool hasGeometry() const;
-    void createDots();
+    void createDots(const QVector3D &coords,const QVector3D &dotToFind);
     void clearDots();
 protected slots:
     void loadGeometryFromFile();
     void fitToView();
-    void valueChanged();
+    void valueChanged(double d);
 };
 
 #endif // MAINWINDOW_H

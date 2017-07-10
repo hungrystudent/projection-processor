@@ -14,6 +14,7 @@ private slots:
     void inlineSearchX();
     void inlineSearchY();
     void inlineSearchZ();
+    void flat1();
 };
 
 #endif // KDTREETESTS_H

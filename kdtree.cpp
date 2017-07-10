@@ -1,13 +1,11 @@
 #include "kdtree.h"
 #include <kdtreenode.h>
 #include <qmath.h>
+#include <QDebug>
 KDTree::KDTree()
 {
 
 }
-
-
-
 
 KDTreeNode *KDTree::createTree(const QVector<QVector3D> &pointList,const QVector<int> &indexArray, int depth)
 {
@@ -113,21 +111,28 @@ KDTreeNode *KDTree::findClosest(KDTreeNode *subTreeForSearch, const QVector3D &i
         break;
     }
 
-    float x_cur_difference = subTreeForSearch->coordinates.x() - inputDot.x();
-    float y_cur_difference = subTreeForSearch->coordinates.y() - inputDot.y();
-    float z_cur_difference = subTreeForSearch->coordinates.z() - inputDot.z();
-    float cur_distance= qSqrt(x_cur_difference*x_cur_difference+y_cur_difference*y_cur_difference+z_cur_difference*z_cur_difference);
-
-    float x_best_difference = currentBest->coordinates.x() - inputDot.x();
-    float y_best_difference = currentBest->coordinates.y() - inputDot.y();
-    float z_best_difference = currentBest->coordinates.z() - inputDot.z();
-    float best_distance= qSqrt(x_best_difference*x_best_difference+y_best_difference*y_best_difference+z_best_difference*z_best_difference);
-
-    if ((cur_distance < best_distance)){
-        currentBest=subTreeForSearch;
-        newBestDistance = cur_distance;
+    bool currentBestIsEmpty = (currentBest->emptyFlag == true);
+    qDebug() << "I'm here";
+    if(currentBestIsEmpty){
+        currentBest = subTreeForSearch;
     }
 
+    if (!currentBestIsEmpty) {
+        float x_cur_difference = subTreeForSearch->coordinates.x() - inputDot.x();
+        float y_cur_difference = subTreeForSearch->coordinates.y() - inputDot.y();
+        float z_cur_difference = subTreeForSearch->coordinates.z() - inputDot.z();
+        float cur_distance= qSqrt(x_cur_difference*x_cur_difference+y_cur_difference*y_cur_difference+z_cur_difference*z_cur_difference);
+
+        float x_best_difference = currentBest->coordinates.x() - inputDot.x();
+        float y_best_difference = currentBest->coordinates.y() - inputDot.y();
+        float z_best_difference = currentBest->coordinates.z() - inputDot.z();
+        float best_distance= qSqrt(x_best_difference*x_best_difference+y_best_difference*y_best_difference+z_best_difference*z_best_difference);
+
+        if ((cur_distance < best_distance)){
+            currentBest=subTreeForSearch;
+            newBestDistance = cur_distance;
+        }
+    }
     if (subTreeForSearch->leftNode->emptyFlag != true){
         switch (axis) {
         case 0:
@@ -155,7 +160,7 @@ KDTreeNode *KDTree::findClosest(KDTreeNode *subTreeForSearch, const QVector3D &i
             break;
         }
 
-        if(maybeBetter != subTreeForSearch){
+        if((maybeBetter != subTreeForSearch)){
             float probx_cur_difference = subTreeForSearch->coordinates.x() - inputDot.x();
             float proby_cur_difference = subTreeForSearch->coordinates.y() - inputDot.y();
             float probz_cur_difference = subTreeForSearch->coordinates.z() - inputDot.z();

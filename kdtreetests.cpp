@@ -106,3 +106,23 @@ void KDtreeTests::inlineSearchX()
     KDTreeNode *closest = KDTree::findClosest(cubeTree,testDot,0);
     QCOMPARE(closest->coordinates,realClosest);
 }
+
+
+void KDtreeTests::flat1()
+{
+    OBJobject testCube;
+    if(!OBJprocessor::read(QString(DATA_ROOT) + "flat.obj",testCube)){
+        //qDebug() << "No such file or directory \n"; << QString(DATA_ROOT) + "flat.obj" + "\n";
+    }
+    int vertCount = testCube.vertices.count();
+    QVector<int> indexArray(vertCount);
+    for (int vIndex=0; vIndex < vertCount; vIndex++){
+        indexArray[vIndex]=vIndex;
+    }
+    KDTreeNode *cubeTree;
+    cubeTree = KDTree::createTree(testCube.vertices,indexArray,0);
+    QVector3D testDot(-0.1,2.1,0);
+    QVector3D realClosest(8.00,0.00,0.00);
+    KDTreeNode *closest = KDTree::findClosest(cubeTree,testDot,0);
+    QCOMPARE(closest->coordinates,realClosest);
+}

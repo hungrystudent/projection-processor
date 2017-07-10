@@ -1,5 +1,4 @@
-QT += core gui opengl
-QT += core testlib
+QT += core gui opengl testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -36,6 +35,7 @@ include(../Andrew/Wrap3Framework/WGLGeomDataRendererTests/WGLDataGeomStackTriang
 include(../Andrew/Wrap3Framework/WGLObjectRendererTests01/WGLObjectRenderer/WGLObjectRenderer.pri)
 include(../Andrew/Wrap3Framework/WGLGridTests/WGLGrid/WGLGrid.pri)
 include(../Andrew/Wrap3Framework/Shaders/WGLShaderConst/WGLShaderConst.pri)
+include(../Andrew/Wrap3Framework/WGLDots/WGLDots/WGLDots.pri)
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.

@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <QDebug>
+#include <kdtree.h>
+#include <kdtreenode.h>
 
 using namespace Wrap;
 
@@ -56,6 +58,15 @@ void MainWindow::initializeViewport()
     glMaterialSurface = new WGLMaterialSurface();
     glMaterialWireframe = new WGLMaterialWireframe();
 
+    QVector<QVector3D> vertices;
+    vertices = geom->v;
+    int vertCount = geom->v.count();
+    QVector<int> indexArray(vertCount);
+    for (int vIndex=0; vIndex < vertCount; vIndex++){
+        indexArray[vIndex]=vIndex;
+    }
+    geomTree = KDTree::createTree(vertices,indexArray,0);
+
 }
 
 void MainWindow::deinitializeViewport()
@@ -96,16 +107,17 @@ void MainWindow::fitToView()
     viewport->updateGL();
 }
 
-void MainWindow::valueChanged(int i)
+void MainWindow::valueChanged()
 {
-    int xData;
-    int yData;
-    int zData;
-    qDebug() << "------S------";
-    qDebug() << spinboxX->value();
-    qDebug() << spinboxY->value();
-    qDebug() << spinboxZ->value();
-    qDebug() << "------E------";
+    QVector3D dot((float)spinboxX->value(),(float)spinboxY->value(),(float)spinboxZ->value());
+    KDTreeNode *finded;
+    finded = KDTree::findClosest(geomTree,dot,0);
+    createDots();
+//    qDebug() << "------S------";
+//    qDebug() << spinboxX->value();
+//    qDebug() << spinboxY->value();
+//    qDebug() << spinboxZ->value();
+//    qDebug() << "------E------";
 }
 
 void MainWindow::clearGeometry()
@@ -125,3 +137,18 @@ bool MainWindow::hasGeometry() const
     return geom != nullptr;
 }
 
+void MainWindow::createDots()
+{
+    QVector<QVector3D> dots = { QVector3D(0,0,0),QVector3D(1,0,0),QVector3D(0,1,0),QVector3D(0,0,1) };
+    glDots = new WGLDots(dots);
+    glDots->setPointSize(3);
+    glDots->setColor(QColor(255,0,255));
+    viewport->addObject(glDots,WViewport::Overlay);
+}
+
+void MainWindow::clearDots()
+{
+    viewport->removeObject(glDots,WViewport::Overlay);
+    delete glDots;
+    glDots = nullptr;
+}

@@ -8,6 +8,8 @@
 #include "wglmaterialwireframe.h"
 #include "wglobjectrenderer.h"
 #include "wglgrid.h"
+#include <kdtreenode.h>
+#include "wgldots.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,15 +36,19 @@ private:
     QSpinBox *spinboxX;
     QSpinBox *spinboxY;
     QSpinBox *spinboxZ;
+    KDTreeNode *geomTree;
+    Wrap::WGLDots *glDots = nullptr;
 protected:
     void initializeViewport();
     void deinitializeViewport();
     void clearGeometry();
     bool hasGeometry() const;
+    void createDots();
+    void clearDots();
 protected slots:
     void loadGeometryFromFile();
     void fitToView();
-    void valueChanged(int i);
+    void valueChanged();
 };
 
 #endif // MAINWINDOW_H

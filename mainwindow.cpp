@@ -19,14 +19,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     initializeViewport();
 
-//    QKeyEvent event(QKeyEvent::KeyPress, Qt::Key_S, Qt::KeyboardModifiers());
+    //    QKeyEvent event(QKeyEvent::KeyPress, Qt::Key_S, Qt::KeyboardModifiers());
 
-//    contextNavigation->onKeyPress(&event);
+    //    contextNavigation->onKeyPress(&event);
 
-//    QQuaternion rotation = contextNavigation->rotation;
-//    rotation = snapQuatToWorldAxis(rotation);
-//    contextNavigation->rotation = rotation;
-//    contextNavigation->updateCameraRotation();
+    //    QQuaternion rotation = contextNavigation->rotation;
+    //    rotation = snapQuatToWorldAxis(rotation);
+    //    contextNavigation->rotation = rotation;
+    //    contextNavigation->updateCameraRotation();
 }
 
 MainWindow::~MainWindow()
@@ -133,6 +133,8 @@ void MainWindow::fitToView()
 
 void MainWindow::valueChanged(double d)
 {
+    if (hasDots())
+        clearDots();
     QVector3D dot((float)spinboxX->value(),(float)spinboxY->value(),(float)spinboxZ->value());
     KDTreeNode *finded;
     finded = KDTree::findClosest(geomTree,dot,0);
@@ -167,17 +169,24 @@ void MainWindow::createDots(const QVector3D &coords,const QVector3D &dotToFind)
     viewport->addObject(glDots,WViewport::Overlay);
 
     QVector<QVector3D> dotsTofind = { dotToFind };
-    glDots = new WGLDots(dotsTofind);
-    glDots->setPointSize(4);
-    glDots->setColor(QColor(250,250,0));
+    srchglDots = new WGLDots(dotsTofind);
+    srchglDots->setPointSize(4);
+    srchglDots->setColor(QColor(250,250,0));
 
-    viewport->addObject(glDots,WViewport::Overlay);
-    //viewport->
+    viewport->addObject(srchglDots,WViewport::Overlay);
 }
 
 void MainWindow::clearDots()
 {
     viewport->removeObject(glDots,WViewport::Overlay);
+    viewport->removeObject(srchglDots,WViewport::Overlay);
     delete glDots;
+    delete srchglDots;
     glDots = nullptr;
+    srchglDots = nullptr;
+}
+
+bool MainWindow::hasDots() const
+{
+    return glDots != nullptr;
 }

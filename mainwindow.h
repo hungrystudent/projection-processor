@@ -38,6 +38,7 @@ private:
     QDoubleSpinBox *spinboxZ;
     KDTreeNode *geomTree;
     Wrap::WGLDots *glDots = nullptr;
+    Wrap::WGLDots *srchglDots = nullptr;
 protected:
     void initializeViewport();
     void deinitializeViewport();
@@ -45,6 +46,7 @@ protected:
     bool hasGeometry() const;
     void createDots(const QVector3D &coords,const QVector3D &dotToFind);
     void clearDots();
+    bool hasDots() const;
 protected slots:
     void loadGeometryFromFile();
     void fitToView();

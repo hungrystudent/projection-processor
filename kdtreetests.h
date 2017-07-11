@@ -15,6 +15,9 @@ private slots:
     void inlineSearchY();
     void inlineSearchZ();
     void flat1();
+    void warpedCube();
+    void warpedCube2();
+    void warpedCube3();
 };
 
 #endif // KDTREETESTS_H

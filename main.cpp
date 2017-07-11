@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 {
     runTests();
     QApplication a(argc, argv);
-
+    qDebug() << "HEY HEY HEY" ;
     MainWindow w;
     w.show();
 

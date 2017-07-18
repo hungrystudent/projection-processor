@@ -157,10 +157,10 @@ KDTreeNode *KDTree::findClosest(KDTreeNode *subTreeForSearch, const QVector3D &i
             break;
         }
 
-        if((maybeBetter != subTreeForSearch)){
-            float probx_cur_difference = subTreeForSearch->coordinates.x() - inputDot.x();
-            float proby_cur_difference = subTreeForSearch->coordinates.y() - inputDot.y();
-            float probz_cur_difference = subTreeForSearch->coordinates.z() - inputDot.z();
+        if((maybeBetter != currentBest)){
+            float probx_cur_difference = currentBest->coordinates.x() - inputDot.x();
+            float proby_cur_difference = currentBest->coordinates.y() - inputDot.y();
+            float probz_cur_difference = currentBest->coordinates.z() - inputDot.z();
             float probcur_distance= qSqrt(probx_cur_difference*probx_cur_difference+proby_cur_difference*proby_cur_difference+probz_cur_difference*probz_cur_difference);
 
             float probx_best_difference = maybeBetter->coordinates.x() - inputDot.x();

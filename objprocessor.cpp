@@ -5,6 +5,8 @@
 #include <polygon.h>
 #include <QVector>
 #include <QVector3D>
+#include <qmath.h>
+#include <QDebug>
 
 OBJprocessor::OBJprocessor()
 {
@@ -142,6 +144,59 @@ QVector<QVector3D> OBJprocessor::computeNormals(const QVector<Polygon> &inputPol
     }
     return arr2return;
 }
+
+float OBJprocessor::errFuncForOneResidual(const QVector3D &pointOne, const QVector3D &pointTwo, const float rotation, const float shiftX, const float shiftY){
+    float value2return;
+    float rotX = pointOne.x()*cos(rotation) - pointOne.y()*sin(rotation);
+    float rotY = pointOne.x()*sin(rotation) + pointOne.y()*cos(rotation);
+    float transX = rotX + shiftX;
+    float transY = rotY + shiftY;
+    float residualX = transX - pointTwo.x();
+    float residualY = transY - pointTwo.y();
+    value2return = (residualX)*(residualX) + (residualY)*(residualY);
+    return value2return;
+}
+
+QVector<float> OBJprocessor::getGrad(const QVector<QVector3D> &meshOne, const QVector<QVector3D> &meshTwo, const float rotation, const float shiftX, const float shiftY, const float shitfZ){
+    QVector<float> prevPhaseVec;
+    QVector<float> phaseVec;
+    phaseVec.append(0);
+    phaseVec.append(0);
+    phaseVec.append(0);
+    for(int j=0;j<meshOne.count();j++){
+        prevPhaseVec = OBJprocessor::getGradientForOnePoint(meshOne[j],meshTwo[j],rotation,shiftX,shiftY,0);
+        for(int i=0; i<phaseVec.count(); i++){
+            phaseVec[i]+=prevPhaseVec[i];
+        }
+    }
+    return phaseVec;
+}
+
+QVector<float> OBJprocessor::getGradientForOnePoint(const QVector3D &pointOne, const QVector3D &pointTwo, const float rotation, const float shiftX, const float shiftY, const float shitfZ)
+{
+    QVector<float> vector2return;
+        float derivAlpha= 2*(pointOne.x()*cos(rotation)-pointOne.y()*sin(rotation)+shiftX-pointTwo.x())*(-pointOne.x()*sin(rotation)-pointOne.y()*cos(rotation)) +
+                2*(pointOne.x()*sin(rotation)+pointOne.y()*cos(rotation)+shiftY-pointTwo.y())*(pointOne.x()*cos(rotation)-pointOne.y()*sin(rotation));
+        float derivShiftX = 2*(pointOne.x()*cos(rotation)-pointOne.y()*sin(rotation)+shiftX-pointTwo.x());
+        float derivShiftY = 2*(pointOne.x()*sin(rotation)+pointOne.y()*cos(rotation)+shiftY-pointTwo.y());
+
+        vector2return.append(derivAlpha);
+        vector2return.append(derivShiftX);
+        vector2return.append(derivShiftY);
+
+    float dFdA = (errFuncForOneResidual(pointOne,pointTwo,rotation+0.01,shiftX,shiftY) - errFuncForOneResidual(pointOne,pointTwo,rotation,shiftX,shiftY))/0.01;
+    float dFdX = (errFuncForOneResidual(pointOne,pointTwo,rotation,shiftX+0.01,shiftY) - errFuncForOneResidual(pointOne,pointTwo,rotation,shiftX,shiftY))/0.01;
+    float dFdY = (errFuncForOneResidual(pointOne,pointTwo,rotation,shiftX,shiftY+0.01) - errFuncForOneResidual(pointOne,pointTwo,rotation,shiftX,shiftY))/0.01;;
+
+//    qDebug() << (derivAlpha - dFdA);
+//    qDebug() << (derivShiftX - dFdX);
+//    qDebug() << (derivShiftY - dFdY);
+//    vector2return.append(dFdA);
+//    vector2return.append(dFdX);
+//    vector2return.append(dFdY);
+    return vector2return;
+}
+
 
 
 

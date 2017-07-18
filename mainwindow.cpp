@@ -47,6 +47,7 @@ void MainWindow::initializeViewport()
     //setCentralWidget(viewport);
 
     QVBoxLayout *layout = new QVBoxLayout();
+    QHBoxLayout *hlayout = new QHBoxLayout();
     layout->addWidget(viewport);
     centralWidget()->setLayout(layout);
     spinboxX = new QDoubleSpinBox();
@@ -70,10 +71,10 @@ void MainWindow::initializeViewport()
                 spinboxZ, SIGNAL(valueChanged(double )),
                 this, SLOT(valueChanged(double )));
 
-    layout->addWidget(spinboxX);
-    layout->addWidget(spinboxY);
-    layout->addWidget(spinboxZ);
-
+    hlayout->addWidget(spinboxX);
+    hlayout->addWidget(spinboxY);
+    hlayout->addWidget(spinboxZ);
+    layout->addLayout(hlayout);
     glGrid = new WGLGrid(20,1,WGLGrid::Axis_X,WGLGrid::Axis_Z,10);
     glGrid->setColor(QColor(60,60,60));
     viewport->addObject(glGrid);
